@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حزمة — مودباك على مقاسك</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f5ee;--panel:#fff;--ink:#17231a;--mute:#5f6f63;--line:#dbe5d6;--acc:#3f8f3f;--acc2:#2c6b2f;--ai:#fff;--warn:#a85d00;--r:14px;--sh:0 1px 2px rgba(20,40,20,.06),0 8px 24px rgba(20,40,20,.06)}
+@media(prefers-color-scheme:dark){:root{--bg:#0e150f;--panel:#16201a;--ink:#e6efe5;--mute:#93a595;--line:#26352a;--acc:#5fbf5f;--acc2:#8fe08f;--ai:#08130a;--warn:#e0a95a;--sh:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35)}}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(900px 380px at 50% -120px,color-mix(in srgb,var(--acc) 22%,transparent),transparent),var(--bg);color:var(--ink);font:400 15px/1.75 "IBM Plex Sans Arabic",system-ui,sans-serif}
+button,select,input{font:inherit;color:inherit}
+.wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px}
+.logo{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:18px;padding:4px 0 26px}
+.logo:before{content:"";width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,var(--acc),var(--acc2));box-shadow:inset 0 -5px 0 rgba(0,0,0,.18)}
+h1{font-size:clamp(28px,7vw,42px);line-height:1.25;font-weight:600;margin:0 0 10px}
+.sub{color:var(--mute);margin:0 0 26px;max-width:46ch;font-size:16px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:18px;margin:0 0 14px}
+h2{font-size:16px;font-weight:600;margin:0 0 2px}
+.hint{color:var(--mute);font-size:13px;margin:0 0 12px}
+h3{font-size:13px;font-weight:600;margin:20px 0 2px;color:var(--acc)}
+select{width:100%;max-width:260px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.opt{text-align:start;background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;line-height:1.5;transition:transform .12s,border-color .12s}
+.opt:hover{border-color:var(--acc)}.opt:active{transform:scale(.98)}
+.opt b{display:block;font-weight:600}
+.opt small{display:block;color:var(--mute);margin-top:3px}
+.opt[aria-pressed=true]{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent;color:var(--ai);box-shadow:0 4px 14px color-mix(in srgb,var(--acc) 40%,transparent)}
+.opt[aria-pressed=true] small{color:inherit;opacity:.88}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.btn{background:linear-gradient(135deg,var(--acc),var(--acc2));color:var(--ai);border:0;border-radius:12px;padding:12px 22px;cursor:pointer;font-weight:600;text-decoration:none;display:inline-block}
+.btn.g{background:var(--bg);color:var(--ink);border:1.5px solid var(--line);font-weight:500}
+.btn:disabled{opacity:.55;cursor:default}
+#go{font-size:16px;padding:13px 28px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+#qx label{display:inline-flex;gap:6px;align-items:center;background:var(--bg);border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;cursor:pointer}
+#qx input{accent-color:var(--acc)}
+#add,#exc{background:var(--bg)!important}
+.item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.item img,.ph{width:40px;height:40px;border-radius:10px;background:var(--line);flex:none}
+.item .t{flex:1;min-width:0}
+.item b{font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item small{color:var(--mute);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini{border:1.5px solid var(--line);border-radius:999px;padding:2px 14px;text-decoration:none;font-size:13px;flex:none;color:var(--ink)}
+.mini:hover{border-color:var(--acc);color:var(--acc)}
+ul{list-style:none;margin:0;padding:0}
+.msg{color:var(--mute);margin:12px 0 0}
+.warn{color:var(--warn)}
+.bar{height:4px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:14px;display:none}
+.bar i{display:block;height:100%;width:30%;background:var(--acc);animation:s 1.1s ease-in-out infinite alternate-reverse}
+@keyframes s{to{transform:translateX(-230%)}}
+@media(prefers-reduced-motion:reduce){.bar i{animation:none;width:100%}.opt{transition:none}}
+.sum{border-inline-start:4px solid var(--acc);background:var(--bg);border-radius:10px;padding:8px 14px;margin:2px 0 6px}
+.sum p{margin:2px 0}
+#res{display:none}
+#ad{position:fixed;inset:0;background:rgba(5,10,6,.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:9}
+#ad .box{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;max-width:420px;width:100%;text-align:center;box-shadow:var(--sh)}
+#adslot{min-height:180px;border:1.5px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--mute);margin:14px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="logo">حزمة</div>
+<h1>جهّز مودباك على مقاسك</h1>
+<p class="sub">قولنا تلعب إزاي وعلى إيه، ونجيب لك حزمة كاملة بروابط مباشرة، مظبوطة على قوة جهازك.</p>
+
+<section>
+<h2>إصدار ماينكرافت</h2>
+<p class="hint">من 1.12 لحد أحدث إصدار. الإصدارات القديمة فيها مودات أقل على Modrinth.</p>
+<select id="ver" aria-label="الإصدار"><option>…</option></select>
+</section>
+<section>
+<h2>هتلعب إزاي؟</h2>
+<p class="hint"></p>
+<div class="opts" id="mode"></div>
+</section>
+<section>
+<h2>قوة جهازك</h2>
+<p class="hint"></p>
+<div class="opts" id="power"></div>
+</section>
+<section>
+<h2>بتلعب على إيه؟</h2>
+<p class="hint"></p>
+<div class="opts" id="plat"></div>
+</section>
+<section>
+<h2>نمط اللعب</h2>
+<p class="hint">نضيف مودات تناسب اللي بتحبه.</p>
+<div class="opts" id="style"></div>
+</section>
+<section>
+<h2>اللودر</h2>
+<p class="hint">خليه تلقائي لو مش عارف. Fabric أخف، وNeoForge وForge لمودات معينة.</p>
+<div class="opts" id="ldr"></div>
+</section>
+<section>
+<h2>إضافات سريعة</h2>
+<p class="hint">علّم اللي يعجبك وهيتضاف للحزمة.</p>
+<div class="row" id="qx">
+<label><input type="checkbox" value="xaeros-minimap,xaeros-world-map"> خريطة</label>
+<label><input type="checkbox" value="yigd|gravestones|corail-tombstone"> قبر عند الموت</label>
+<label><input type="checkbox" value="simple-voice-chat"> شات صوتي</label>
+<label><input type="checkbox" value="appleskin"> الجوع والشبع</label>
+</div>
+</section>
+<section>
+<h2>تعديل يدوي (اختياري)</h2>
+<p class="hint">اكتب اسم المود زي ما هو في رابط Modrinth، وافصل بينهم بفاصلة.</p>
+<input id="add" placeholder="ضيف مودات: create, lithium" style="width:100%;margin-bottom:8px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:9px 12px;font:inherit;color:inherit;direction:ltr">
+<input id="exc" placeholder="استبعد مودات: iris, jade" style="width:100%;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:9px 12px;font:inherit;color:inherit;direction:ltr">
+</section>
+<section>
+<div class="row"><button class="btn" id="go" type="button">جهّز الحزمة</button><button class="btn g" id="share" type="button">نسخ رابط الإعدادات</button></div>
+<div class="bar" id="bar"><i></i></div>
+<p class="msg" id="status"></p>
+</section>
+
+<div id="res">
+<section>
+<div class="sum" id="sum"></div>
+<div class="row" style="margin-top:16px">
+<a class="btn" id="dl" style="display:none">ملف .mrpack (بإعلان)</a>
+<button class="btn g" id="zip" type="button">تحميل jar في ZIP (بإعلان)</button>
+<button class="btn g" id="zips" type="button" style="display:none">ZIP للسيرفر فقط (بإعلان)</button>
+<button class="btn g" id="copy" type="button">نسخ الروابط</button>
+<a class="btn g" id="txt">الروابط .txt</a>
+</div>
+<p class="hint" style="margin-top:12px">مجاني: الروابط المباشرة ونسخ الروابط وملف .txt. بإعلان: تحميل jar مجمّع في ZIP والملف الجاهز .mrpack.</p>
+<p class="msg" id="zst"></p>
+<div id="list"></div>
+</section>
+</div>
+</div>
+
+<div id="ad" role="dialog" aria-modal="true"><div class="box"><h2>شاهد إعلان قصير</h2><p class="hint">هنحمّل ملفات jar ونجمعها لك في ZIP واحد (أو ملف جاهز للتثبيت). الروابط المباشرة مجانية دايمًا. الإعلان مرة واحدة لكل حزمة.</p><div id="adslot">مساحة الإعلان</div><p class="msg" id="adt"></p><div class="row" style="justify-content:center"><button class="btn" id="adok" type="button" disabled>فتح التحميل</button><button class="btn g" id="adno" type="button">إلغاء</button></div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const API='https://api.modrinth.com/v2',$=s=>document.querySelector(s);
+const q=o=>encodeURIComponent(JSON.stringify(o));
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const j=async u=>{const r=await fetch(u);if(!r.ok)throw new Error(r.status);return r.json()};
+
+const MODE=[['h','هارد كور','حياة واحدة وعالم أصعب بأجواء توتر.'],['f','سيرفر مع أصحابك','شات صوتي، انتقال سريع، شنط وصناديق مشتركة.'],['s','سيرفايفل لوحدك','تجربة كاملة مريحة: عوالم أجمل ومحتوى أكتر.']];
+const POWER=[[0,'ضعيف','لاب قديم أو موبايل بسيط. نركّز على السلاسة.'],[1,'متوسط','جهاز عادي. توازن بين الأداء والشكل.'],[2,'قوي','جهاز جيد. شيدرز ومحتوى أكبر.']];
+const PLAT=[['pc','كمبيوتر','ملف جاهز تفتحه في Modrinth App أو Prism.'],['ph','موبايل (لانشر)','نستبعد المودات الثقيلة ونجهّز ZIP للمودات.']];
+const STYLE=[['n','عادي','توليفة متوازنة.'],['b','بناء ومعمار','كتل زخرفية وأدوات بناء.'],['a','مغامرات واستكشاف','وحوش وهياكل ومخلوقات جديدة.']];
+const LDR=[['auto','تلقائي','نختار الأنسب للإصدار.'],['fabric','Fabric','خفيف وسريع (1.14 فما فوق).'],['neoforge','NeoForge','للإصدارات الحديثة.'],['forge','Forge','الأقدم والأشهر.']];
+const LN={fabric:'Fabric',forge:'Forge',neoforge:'NeoForge'};
+const GRP={mine:'اخترتها أنت',perf:'الأداء',visual:'الشكل والجو',qol:'تسهيلات',content:'محتوى وتحدي',friends:'للسيرفر والأصحاب',extra:'مودات شائعة للإصدار',deps:'مكتبات لازمة'};
+const CAP={pc:[16,28,42],ph:[12,20,28]},FLOOR=[10,14,18];
+const RAM={pc:['2GB','4GB','6–8GB'],ph:['1.5–2GB','2–3GB','3–4GB']};
+
+// slug (بدائل بـ |), group, minPower, modes, options (P=pc only, S=shader, R=resourcepack), maxPower
+const E=(s,g,p,m,o='',mx=2)=>({s,g,p,m,mx,k:o.includes('S')?'s':o.includes('R')?'r':'m',pc:o.includes('P')});
+const L=[
+E('fabric-api','perf',0,'hfs'),E('lithium','perf',0,'hfs'),E('ferrite-core','perf',0,'hfs'),E('modernfix','perf',0,'hfs'),
+E('sodium','perf',0,'hfs','P'),E('entityculling','perf',0,'hfs'),E('immediatelyfast','perf',0,'hfs','P'),E('memoryleakfix','perf',0,'hfs'),
+E('ksyxis','perf',0,'hfs'),E('moreculling','perf',0,'hfs'),E('dynamic-fps','perf',0,'hfs','P'),E('sodium-extra','perf',0,'hfs','P'),
+E('lazydfu','perf',0,'hfs'),E('cull-less-leaves','perf',0,'hfs'),E('krypton','perf',0,'f'),E('noisium','perf',1,'hfs'),
+E('c2me-fabric','perf',1,'hfs'),E('enhanced-block-entities','perf',1,'hfs','P'),
+E('iris','visual',1,'hfs','P'),E('complementary-reimagined','visual',1,'hfs','PS',1),E('complementary-unbound','visual',2,'hfs','PS'),
+E('continuity','visual',1,'hfs'),E('lambdynamiclights','visual',1,'hfs'),E('presence-footsteps','visual',1,'hs'),
+E('sound-physics-remastered','visual',1,'hs'),E('default-dark-mode','visual',0,'hfs','R'),E('faithful-32x','visual',2,'hfs','PR'),
+E('modmenu','qol',0,'hfs'),E('appleskin','qol',0,'hfs'),E('mouse-tweaks','qol',0,'hfs'),E('zoomify','qol',0,'hfs'),
+E('jade','qol',0,'fs'),E('xaeros-minimap','qol',0,'fs'),E('xaeros-world-map','qol',0,'fs'),E('emi|jei','qol',0,'fs'),
+E('shulkerboxtooltip','qol',0,'fs'),E('inventory-profiles-next','qol',1,'fs'),E('no-chat-reports','qol',0,'f'),
+E('farmers-delight-refabricated|farmers-delight','content',0,'hfs'),E('tough-as-nails','content',0,'h'),E('dehydration','content',0,'h'),
+E('terralith','content',1,'hfs'),E('better-combat','content',1,'hfs'),E('yungs-better-dungeons','content',1,'hfs'),
+E('yungs-better-mineshafts','content',1,'hfs'),E('yungs-better-strongholds','content',1,'hfs'),
+E('repurposed-structures-fabric|repurposed-structures','content',1,'hfs'),E('bosses-of-mass-destruction','content',1,'h'),
+E('fabric-seasons','content',1,'h'),E('when-dungeons-arise','content',1,'hs'),E('towns-and-towers','content',1,'fs'),
+E('supplementaries','content',1,'fs'),E('tectonic','content',2,'hs'),E('create-fabric|create','content',2,'fs'),
+E('betterend','content',2,'s'),E('betternether','content',2,'s'),
+E('simple-voice-chat','friends',0,'f'),E('waystones','friends',0,'fs'),E('lootr','friends',0,'f'),
+E('sophisticated-backpacks','friends',1,'fs'),E('chunky','friends',0,'f'),E('spark','friends',0,'f'),E('ledger','friends',0,'f')
+];
+
+// ===== بوابة الإعلان =====
+// وصّل شبكة الإعلانات (AdSense / AdMob / Unity...) هنا: ارجع true لما المشاهدة تكتمل.
+// الوضع الحالي تجريبي: عدّاد 10 ثواني داخل #adslot.
+async function showRewardedAd(){
+ const box=$('#ad'),ok=$('#adok'),no=$('#adno'),t=$('#adt');
+ box.style.display='flex';ok.disabled=true;
+ return new Promise(res=>{
+  let n=10;t.textContent='باقي '+n+' ثانية';
+  const iv=setInterval(()=>{n--;if(n>0)t.textContent='باقي '+n+' ثانية';else{clearInterval(iv);t.textContent='تمت المشاهدة';ok.disabled=false}},1000);
+  const end=v=>{clearInterval(iv);box.style.display='none';res(v)};
+  ok.onclick=()=>end(true);no.onclick=()=>end(false);
+ });
+}
+let unlocked=false,asking=false;
+async function gate(fn){
+ if(unlocked)return fn();
+ if(asking)return;asking=true;
+ try{if(await showRewardedAd()){unlocked=true;fn()}}finally{asking=false}
+}
+const T=(t,...a)=>({...E(...a),t});
+L.splice(18,0,
+T('b','litematica','content',0,'hfs','P'),T('b','worldedit','content',0,'fs'),T('b','chipped','content',0,'hfs'),
+T('b','macaws-windows','content',0,'hfs'),T('b','macaws-doors','content',0,'hfs'),T('b','macaws-roofs','content',0,'hfs'),T('b','handcrafted','content',1,'hfs'),
+T('a','friends-and-foes','content',0,'hfs'),T('a','naturalist','content',0,'hfs'),T('a','guard-villagers','content',0,'hfs'),
+T('a','explorers-compass','content',0,'hfs'),T('a','dungeons-and-taverns','content',1,'hfs'),T('a','wilder-wild','content',1,'hfs'));
+const st={mode:'s',power:1,plat:'pc',style:'n',ldr:'auto',out:null,urls:[]};
+const OK={mode:'hfs',plat:['pc','ph'],style:['n','b','a'],ldr:['auto','fabric','neoforge','forge']};
+function snap(){return{ver:$('#ver').value||st.ver||'',mode:st.mode,power:st.power,plat:st.plat,style:st.style,ldr:st.ldr,add:$('#add').value,exc:$('#exc').value}}
+function save(){try{localStorage.setItem('hozma',JSON.stringify(snap()))}catch(_){}}
+(function load(){
+ let d={};try{d=JSON.parse(localStorage.getItem('hozma')||'{}')}catch(_){}
+ if(location.hash.length>1)for(const[k,x]of new URLSearchParams(location.hash.slice(1)))d[k]=x;
+ if(typeof d.ver==='string')st.ver=d.ver;
+ if(d.mode&&OK.mode.includes(d.mode)&&d.mode.length===1)st.mode=d.mode;
+ if(OK.plat.includes(d.plat))st.plat=d.plat;
+ if(OK.style.includes(d.style))st.style=d.style;
+ if(OK.ldr.includes(d.ldr))st.ldr=d.ldr;
+ if([0,1,2].includes(+d.power)&&d.power!=='')st.power=+d.power;
+ if(typeof d.add==='string')$('#add').value=d.add.slice(0,300);
+ if(typeof d.exc==='string')$('#exc').value=d.exc.slice(0,300);
+})();
+$('#add').oninput=$('#exc').oninput=save;
+$('#share').onclick=async e=>{const b=e.target;try{await navigator.clipboard.writeText(location.href.split('#')[0]+'#'+new URLSearchParams(snap()));b.textContent='تم نسخ الرابط';setTimeout(()=>b.textContent='نسخ رابط الإعدادات',1500)}catch(_){}};
+function opts(id,list,key){
+ const box=$('#'+id);
+ const draw=()=>box.innerHTML=list.map(o=>`<button type="button" class="opt" data-v="${o[0]}" aria-pressed="${String(st[key])===String(o[0])}"><b>${o[1]}</b><small>${o[2]}</small></button>`).join('');
+ box.onclick=e=>{const b=e.target.closest('button');if(!b)return;st[key]=key==='power'?+b.dataset.v:b.dataset.v;draw();save()};
+ draw();
+}
+opts('mode',MODE,'mode');opts('power',POWER,'power');opts('plat',PLAT,'plat');opts('style',STYLE,'style');opts('ldr',LDR,'ldr');
+
+(async()=>{
+ try{
+  const v=(await j(API+'/tag/game_version')).filter(x=>x.version_type==='release'&&cmp(x.version,'1.12')>=0).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  $('#ver').innerHTML=v.map(x=>`<option>${esc(x.version)}</option>`).join('');
+  const i=v.findIndex(x=>x.version===(st.ver||'1.21.1'));if(i>=0)$('#ver').selectedIndex=i;$('#ver').onchange=save;
+ }catch(e){$('#ver').innerHTML='<option>1.21.1</option><option>1.20.1</option><option>1.12.2</option>'}
+})();
+function cmp(a,b){const x=a.split('.').map(Number),y=b.split('.').map(Number);for(let i=0;i<3;i++){const d=(x[i]||0)-(y[i]||0);if(d)return d}return 0}
+
+async function pick(slug,kind,v,l){
+ const lo={m:`loaders=${q([l])}&`,s:`loaders=${q(['iris'])}&`,r:''}[kind];
+ const vs=await j(`${API}/project/${slug}/version?${lo}game_versions=${q([v])}`);
+ const ver=vs.find(x=>x.version_type==='release')||vs[0];
+ if(!ver)return null;
+ return{ver,f:ver.files.find(x=>x.primary)||ver.files[0],id:ver.project_id};
+}
+async function metaOf(ids){
+ const m=new Map(),a=[...ids];
+ for(let i=0;i<a.length;i+=40)(await j(`${API}/projects?ids=${q(a.slice(i,i+40))}`)).forEach(p=>m.set(p.id,p));
+ return m;
+}
+async function loaderInfo(l,v){
+ try{
+  if(l==='fabric'){const a=await j('https://meta.fabricmc.net/v2/versions/loader');return(a.find(x=>x.stable)||a[0]).version}
+  if(l==='neoforge'){const p=v.split('.'),pre=p[1]+'.'+(p[2]||0)+'.';const r=await j('https://maven.neoforged.net/api/maven/versions/releases/net/neoforged/neoforge');const a=r.versions.filter(x=>x.startsWith(pre)&&!x.includes('-'));return a[a.length-1]||null}
+  const p=await j('https://files.minecraftforge.net/net.minecraftforge.forge/promotions_slim.json');
+  return p.promos[v+'-recommended']||p.promos[v+'-latest']||null;
+ }catch(e){return l==='fabric'?'0.16.14':null}
+}
+
+$('#go').onclick=async()=>{
+ unlocked=false;
+ const v=$('#ver').value,{mode,power,plat}=st,l=st.ldr!=='auto'?st.ldr:(cmp(v,'1.14')>=0?'fabric':'forge');
+ const cap=CAP[plat][power],floor=FLOOR[power];
+ const btn=$('#go'),bar=$('#bar'),sx=$('#status');
+ btn.disabled=true;bar.style.display='block';sx.className='msg';sx.textContent='بنجيب المودات والروابط… ممكن ياخد نصف دقيقة.';$('#res').style.display='none';
+ try{
+  const sl=x=>($(x).value||'').toLowerCase().split(/[,\s]+/).filter(x=>/^[a-z0-9_-]+$/.test(x)).slice(0,30);
+  const exc=new Set(sl('#exc')),add=[...sl('#add'),...[...document.querySelectorAll('#qx input:checked')].flatMap(i=>i.value.split(','))];
+  const slots=L.filter(e=>e.m.includes(mode)&&power>=e.p&&power<=e.mx&&!(plat==='ph'&&e.pc)&&(!e.t||e.t===st.style)&&!e.s.split('|').some(x=>exc.has(x)));
+  slots.unshift(...add.map(x=>E(x,'mine',0,'hfs')));
+  const got=await Promise.all(slots.map(async e=>{
+   for(const s of e.s.split('|')){try{const r=await pick(s,e.k,v,l);if(r)return{...r,kind:e.k,grp:e.g,dep:false}}catch(_){}}
+   return null;
+  }));
+  const res=new Map();let n=0;
+  for(const x of got){if(!x||res.has(x.id))continue;if(x.kind==='m'){if(n>=cap)continue;n++}res.set(x.id,x)}
+  const target=Math.min(cap,floor+8);
+  if(n<floor){
+   try{
+    const r=await j(`${API}/search?limit=40&index=downloads&facets=${q([['project_type:mod'],['versions:'+v],['categories:'+l]])}`);
+    for(const h of r.hits){
+     if(n>=target)break;if(h.categories.includes('library')||res.has(h.project_id))continue;
+     const x=await pick(h.project_id,'m',v,l).catch(()=>null);
+     if(x){res.set(x.id,{...x,kind:'m',grp:'extra',dep:false});n++}
+    }
+   }catch(_){}
+  }
+  const tried=new Set(res.keys());
+  let lvl=[...res.values()].filter(r=>r.kind==='m').flatMap(r=>r.ver.dependencies);
+  while(lvl.length){
+   const ids=[...new Set(lvl.filter(d=>d.dependency_type==='required'&&d.project_id&&!tried.has(d.project_id)).map(d=>d.project_id))];
+   ids.forEach(i=>tried.add(i));const nx=[];
+   await Promise.all(ids.map(async id=>{try{const r=await pick(id,'m',v,l);if(r){res.set(r.id,{...r,kind:'m',grp:'deps',dep:true});nx.push(...r.ver.dependencies)}}catch(_){}}));
+   lvl=nx;
+  }
+  if(!res.size)throw new Error('empty');
+  const meta=await metaOf(res.keys()),lv=await loaderInfo(l,v);
+  const dir={m:'mods/',s:'shaderpacks/',r:'resourcepacks/'},env=s=>['required','optional','unsupported'].includes(s)?s:'optional';
+  const files=[...res.values()].map(r=>{
+   const m=meta.get(r.id)||{},path=dir[r.kind]+r.f.filename;
+   return{...r,title:m.title||r.f.filename,desc:m.description||'',icon:m.icon_url,url:r.f.url,path,server:r.kind==='m'?m.server_side:'unsupported',
+    entry:{path,hashes:{sha1:r.f.hashes.sha1,sha512:r.f.hashes.sha512},env:r.kind==='m'?{client:env(m.client_side),server:env(m.server_side)}:{client:'required',server:'unsupported'},downloads:[r.f.url],fileSize:r.f.size}};
+  });
+  st.out={files,l,lv,v};
+  const mname=MODE.find(x=>x[0]===mode)[1],name=`Hozma ${mname} ${v}`;
+  const safe='hozma-'+mode+'-'+v;
+  if(lv){
+   const zip=new JSZip();
+   zip.file('modrinth.index.json',JSON.stringify({formatVersion:1,game:'minecraft',versionId:'1.0.0',name,summary:mname,files:files.map(f=>f.entry),dependencies:{minecraft:v,[l==='fabric'?'fabric-loader':l]:lv}},null,2));
+   const b=await zip.generateAsync({type:'blob',compression:'DEFLATE'});
+   if(st.u1)URL.revokeObjectURL(st.u1);st.u1=URL.createObjectURL(b);
+   $('#dl').href=st.u1;$('#dl').download=safe+'.mrpack';
+  }
+  $('#dl').style.display=lv&&plat==='pc'?'':'none';
+  const txt=files.map(f=>f.url).join('\n');st.txt=txt;
+  if(st.u2)URL.revokeObjectURL(st.u2);st.u2=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
+  $('#txt').href=st.u2;$('#txt').download=safe+'-links.txt';
+  $('#zips').style.display=mode==='f'?'':'none';
+  $('#zip').textContent='تحميل jar في ZIP (بإعلان)';$('#zst').textContent='';
+  const nm=files.filter(f=>f.kind==='m').length,sh=files.length-nm;
+  const how=plat==='pc'?'افتح ملف .mrpack في Modrinth App أو Prism Launcher وهيتثبت كل شيء.':`نزّل ZIP، فك الضغط، وحط الملفات في مجلد اللعبة داخل اللانشر. لازم تسطّب ${LN[l]} ${v} الأول.`;
+  $('#sum').innerHTML=`<p><b>${LN[l]} ${lv||''}</b> على ماينكرافت ${v}.</p><p>${nm} مود${sh?` و${sh} من الشيدرز والريسورس`:''}، ورام مقترحة للعبة ${RAM[plat][power]}.</p><p>${how}</p>`+(mode==='h'?'<p>فعّل وضع Hardcore وقت إنشاء العالم.</p>':'')+(mode==='f'?'<p>على السيرفر حط المودات اللي في ZIP السيرفر. الشات الصوتي محتاج بورت UDP.</p>':'')+(l==='forge'?'<p class="warn">الإصدارات القديمة على Forge مودات Modrinth فيها محدودة.</p>':'');
+  const order=['mine','perf','visual','qol','content','friends','extra','deps'];
+  $('#list').innerHTML=order.map(g=>{const a=files.filter(f=>f.grp===g);return a.length?`<h3>${GRP[g]}</h3><ul>${a.map(f=>`<li class="item">${f.icon?`<img src="${esc(f.icon)}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">`:'<span class="ph"></span>'}<div class="t"><b>${esc(f.title)}</b><small>${esc(f.desc)}</small></div><a class="mini" href="${esc(f.url)}" rel="noopener">رابط مباشر</a></li>`).join('')}</ul>`:''}).join('');
+  $('#res').style.display='block';sx.textContent='';
+  $('#res').scrollIntoView({behavior:'smooth'});
+ }catch(e){sx.className='msg warn';sx.textContent='ما قدرنا نجهّز حزمة لهذا الإصدار. جرّب إصدار أحدث أو تأكد من الاتصال.'}
+ bar.style.display='none';btn.disabled=false;
+};
+
+async function mkZip(btn,filter,label){
+ const fs=st.out.files.filter(filter),zip=new JSZip(),pool=[...fs];let i=0,bad=0;
+ btn.disabled=true;
+ await Promise.all(Array.from({length:5},async()=>{while(pool.length){const f=pool.shift();try{const r=await fetch(f.url);if(!r.ok)throw 0;zip.file(f.path,await r.blob())}catch(e){bad++}$('#zst').textContent=`جاري التحميل ${++i}/${fs.length}`}}));
+ if(bad===fs.length){$('#zst').className='msg warn';$('#zst').textContent='المتصفح منع التحميل المجمّع. استخدم الروابط المباشرة بدلًا منه.';btn.disabled=false;return}
+ const b=await zip.generateAsync({type:'blob',compression:'STORE'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=label+'.zip';a.click();
+ $('#zst').className='msg';$('#zst').textContent=bad?`تم، بس ${bad} ملف ما اتحمّل. حمّله من الرابط المباشر.`:'تم التحميل.';btn.disabled=false;
+}
+$('#zip').onclick=e=>{const b=e.target;gate(()=>mkZip(b,()=>true,'hozma-mods-'+st.out.v))};
+$('#zips').onclick=e=>{const b=e.target;gate(()=>mkZip(b,f=>f.kind==='m'&&f.server!=='unsupported','hozma-server-'+st.out.v))};
+$('#copy').onclick=e=>doCopy(e.target);
+async function doCopy(e0){const e={target:e0};try{await navigator.clipboard.writeText(st.txt);e.target.textContent='تم النسخ';setTimeout(()=>e.target.textContent='نسخ الروابط',1500)}catch(_){}}
+for(const id of ['dl'])$('#'+id).addEventListener('click',e=>{if(unlocked)return;e.preventDefault();const a=e.currentTarget;gate(()=>a.click())});
+
+</script>
+</body>
+</html>
